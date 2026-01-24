@@ -189,8 +189,8 @@
             }
         }
 
-        const mediaInfo = JSON.stringify(getMediaDeviceInfo(), null, 2);
-        alert(mediaInfo);
+        //const mediaInfo = JSON.stringify(getMediaDeviceInfo(), null, 2);
+        //alert(mediaInfo);
 
         const featureSupport = {
             usb: "usb" in navigator,
@@ -200,7 +200,7 @@
             share: "share" in navigator,
         };
 
-        alert(featureSupport.usb);
+        //alert(featureSupport.usb);
 
         function calculateScore(data) {
             let score = 0;
@@ -270,8 +270,8 @@
 
             addCard("Hardware Threads", fingerprint.hardwareConcurrency, "Medium", "CPU thread count can narrow device types.");
 
-            alert(navigator.deviceMemory);
-            alert(navigator.maxTouchPoints);
+            //alert(navigator.deviceMemory);
+            //alert(navigator.maxTouchPoints);
 
             document.getElementById("results").style.display = "block";
 
@@ -279,3 +279,4 @@
     </script>
 </body>
 </html>
+
