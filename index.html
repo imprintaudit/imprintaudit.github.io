@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Imprint</title>
+    <link rel="icon" type="image/x-icon" href="favicon.svg">
     <style>
         :root {
             --bg: #f8fafc;
@@ -93,6 +94,10 @@
             background: #dc2626;
         }
 
+        strong {
+            color: var(--text);
+        }
+
         code {
             display: inline-block;
             background: rgba(0, 0, 0, 0.05);
@@ -101,35 +106,47 @@
             border-radius: var(--radius);
             font-size: 0.9rem;
                         
-            max-width: 90%;
+            max-width: 85%;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
         }
 
-        .icon {
+        code {
+            cursor: pointer;
+        }
+        
+        code:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        #main-icon {
             width: 8rem;
             height: 8rem;
             overflow: visible;
             margin-left: auto;
+        }
+
+        .icon {
+            width: 1rem;
+            height: 1rem;
+            overflow: visible;
+            margin: 0rem 0.25rem 0rem;
         }
     </style>
 </head>
 <body>
     <header>
         <h1>What Does Your Browser Reveal About You?</h1>
-        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M112 320C112 205.1 205.1 112 320 112C383.1 112 439.6 140.1 477.8 184.5C486.4 194.6 501.6 195.7 511.6 187.1C521.6 178.5 522.8 163.3 514.2 153.3C467.3 98.6 397.7 64 320 64C178.6 64 64 178.6 64 320L64 360C64 373.3 74.7 384 88 384C101.3 384 112 373.3 112 360L112 320zM570.5 267.1C567.8 254.1 555 245.8 542.1 248.6C529.2 251.4 520.8 264.1 523.6 277C526.5 290.9 528.1 305.3 528.1 320.1L528.1 360.1C528.1 373.4 538.8 384.1 552.1 384.1C565.4 384.1 576.1 373.4 576.1 360.1L576.1 320.1C576.1 302 574.2 284.3 570.6 267.2zM320 144C301 144 282.6 147 265.5 152.6C250.3 157.6 246.8 176.3 257.2 188.5C264.3 196.8 276 199.3 286.6 196.4C297.2 193.5 308.4 192 320 192C390.7 192 448 249.3 448 320L448 344.9C448 370.1 446.5 395.2 443.6 420.2C441.9 434.8 453 448 467.8 448C479.6 448 489.7 439.4 491.1 427.7C494.4 400.3 496.1 372.7 496.1 345L496.1 320.1C496.1 222.9 417.3 144.1 320.1 144.1zM214.7 212.7C205.6 202.1 189.4 201.3 180.8 212.3C157.7 242.1 144 279.4 144 320L144 344.9C144 369.1 141.4 393.3 136.2 416.8C132.8 432.4 144.1 447.9 160.1 447.9C170.6 447.9 180 440.9 182.3 430.6C188.7 402.5 192 373.8 192 344.8L192 319.9C192 292.7 200.5 267.5 214.9 246.8C222.1 236.4 222.9 222.2 214.7 212.6zM320 224C267 224 224 267 224 320L224 344.9C224 380.8 219.4 416.4 210.2 451C206.4 465.3 216.9 480 231.7 480C241.2 480 249.6 473.8 252.1 464.6C262.6 425.6 268 385.4 268 344.9L268 320C268 291.3 291.3 268 320 268C348.7 268 372 291.3 372 320L372 344.9C372 381.2 368.5 417.3 361.6 452.8C358.9 466.7 369.3 480 383.4 480C393.6 480 402.4 473 404.4 463C412.1 424.2 416 384.7 416 344.9L416 320C416 267 373 224 320 224zM344 320C344 306.7 333.3 296 320 296C306.7 296 296 306.7 296 320L296 344.9C296 404.8 285 464.2 263.5 520.1L257.6 535.4C252.8 547.8 259 561.7 271.4 566.4C283.8 571.1 297.7 565 302.4 552.6L308.3 537.3C331.9 475.9 344 410.7 344 344.9L344 320z"/></svg>
+        <svg class="icon" id="main-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M112 320C112 205.1 205.1 112 320 112C383.1 112 439.6 140.1 477.8 184.5C486.4 194.6 501.6 195.7 511.6 187.1C521.6 178.5 522.8 163.3 514.2 153.3C467.3 98.6 397.7 64 320 64C178.6 64 64 178.6 64 320L64 360C64 373.3 74.7 384 88 384C101.3 384 112 373.3 112 360L112 320zM570.5 267.1C567.8 254.1 555 245.8 542.1 248.6C529.2 251.4 520.8 264.1 523.6 277C526.5 290.9 528.1 305.3 528.1 320.1L528.1 360.1C528.1 373.4 538.8 384.1 552.1 384.1C565.4 384.1 576.1 373.4 576.1 360.1L576.1 320.1C576.1 302 574.2 284.3 570.6 267.2zM320 144C301 144 282.6 147 265.5 152.6C250.3 157.6 246.8 176.3 257.2 188.5C264.3 196.8 276 199.3 286.6 196.4C297.2 193.5 308.4 192 320 192C390.7 192 448 249.3 448 320L448 344.9C448 370.1 446.5 395.2 443.6 420.2C441.9 434.8 453 448 467.8 448C479.6 448 489.7 439.4 491.1 427.7C494.4 400.3 496.1 372.7 496.1 345L496.1 320.1C496.1 222.9 417.3 144.1 320.1 144.1zM214.7 212.7C205.6 202.1 189.4 201.3 180.8 212.3C157.7 242.1 144 279.4 144 320L144 344.9C144 369.1 141.4 393.3 136.2 416.8C132.8 432.4 144.1 447.9 160.1 447.9C170.6 447.9 180 440.9 182.3 430.6C188.7 402.5 192 373.8 192 344.8L192 319.9C192 292.7 200.5 267.5 214.9 246.8C222.1 236.4 222.9 222.2 214.7 212.6zM320 224C267 224 224 267 224 320L224 344.9C224 380.8 219.4 416.4 210.2 451C206.4 465.3 216.9 480 231.7 480C241.2 480 249.6 473.8 252.1 464.6C262.6 425.6 268 385.4 268 344.9L268 320C268 291.3 291.3 268 320 268C348.7 268 372 291.3 372 320L372 344.9C372 381.2 368.5 417.3 361.6 452.8C358.9 466.7 369.3 480 383.4 480C393.6 480 402.4 473 404.4 463C412.1 424.2 416 384.7 416 344.9L416 320C416 267 373 224 320 224zM344 320C344 306.7 333.3 296 320 296C306.7 296 296 306.7 296 320L296 344.9C296 404.8 285 464.2 263.5 520.1L257.6 535.4C252.8 547.8 259 561.7 271.4 566.4C283.8 571.1 297.7 565 302.4 552.6L308.3 537.3C331.9 475.9 344 410.7 344 344.9L344 320z"/></svg>
     </header>
     <button id="analyseBtn">Analyse My Browser</button>
 
     <div class="results" id="results">
         <div class="summary">
             <h2>Fingerprint Summary</h2>
-            <p><strong>Hash:</strong> <code id="hashDisplay"></code></p>
+            <p style="white-space: nowrap;"><strong>Hash:</strong> <code id="hashDisplay"></code></p>
             <p><strong>Uniqueness Score:</strong> <span id="scoreDisplay"></span></p>
-            <p style="font-size: 0.9rem; color: #94a3b8;">
-                This is an educational estimate, not a guarantee.
-            </p>
         </div>
 
         <div class="cards" id="cards"></div>
@@ -165,14 +182,14 @@
             const canvas = document.createElement("canvas");
             const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
             if (!gl) return {
-                vendor: "Unavailable", 
-                renderer: "Unavailable"
+                vendor: "unavailable", 
+                renderer: "unavailable"
             };
             const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
             return debugInfo ? {
                 vendor: gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL),
                 renderer: gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
-            } : {vendor: "Hidden", renderer: "Hidden"};
+            } : {vendor: "unavailable", renderer: "unavailable"};
         }
 
         function getCanvasFingerprint() {
@@ -209,7 +226,7 @@
 
                 return canvas.toDataURL();
             } catch {
-                return 'Canvas Unavailable';
+                return 'unavailable';
             }
         }
 
@@ -242,7 +259,7 @@
 
                 return sum.toString();
             } catch {
-                return "Audio Context Unavailable";
+                return "unavailable";
             }
         }
 
@@ -262,12 +279,38 @@
 
                 return counts;
             } catch (err) {
-                return { error: "Media device access blocked"};
+                return { error: "unavailable"};
             }
         }
 
         const mediaInfo = JSON.stringify(getMediaDeviceInfo(), null, 2);
         //alert(mediaInfo);
+        //alert(CSS.supports("backdrop-filter", "blur(10px)"));
+
+        function getMimeTypes() {
+            if (!navigator.mimeTypes) return 'unavailable';
+            const mimes = Array.from(navigator.mimeTypes).map(m => m.type).filter(Boolean);
+            return mimes
+            return mimes.length ? mimes.join(', ') : 'None';
+        }
+
+        //alert(getMimeTypes());
+        // typingggggggggggggggggggg
+        //alert(screen.orientation.type);
+        //alert(window.matchMedia('(pointer: coarse)').matches ? 'Coarse' : 'Fine');
+        //alert(window.orientation);
+        //alert(navigator.getBattery().dischargingTime);
+
+        function getColorGamut() {
+            if (matchMedia("(color-gamut: rec2020)").matches) return "rec2020";
+            if (matchMedia("(color-gamut: p3)").matches) return "p3";
+            if (matchMedia("(color-gamut: srgb)").matches) return "srgb";
+            return "unavailable";
+        }
+
+        function getDynamicRange() {
+            return matchMedia("(dynamic-range: high)").matches ? "HDR" : "SDR";
+        }
 
         const featureSupport = {
             usb: "usb" in navigator,
@@ -283,7 +326,7 @@
             let score = 0;
             if (data.fonts.length > 6) score += 30;
             if (![1920, 1366, 1536].includes(data.screen.width)) score += 20;
-            if (data.webgl.renderer !== "Hidden") score += 20;
+            if (data.webgl.renderer !== "unavailable") score += 20;
             if (data.hardwareConcurrency >= 8) score += 15;
             if (data.languages.length > 1) score += 15;
             return score;
@@ -310,6 +353,68 @@
             return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, "0")).join("");
         }
 
+        function renderFixes(fingerprint) {
+            const existing = document.getElementById('fixes');
+            if (existing) existing.remove();
+
+            const section = document.createElement('section');
+            section.className = 'summary';
+            section.id = 'fixes';
+            let fixes = [];
+
+            if (!['1920x1080', '1366x768', '1536x864'].includes(`${fingerprint.screen.width}x${fingerprint.screen.height}`)) {
+                fixes.push({
+                    issue: 'Uncommon screen resolution',
+                    fix: 'Use more common window sizes like 1920x1080 or 1366x768 to blend in with typical users.'
+                });
+            }
+
+            /*if () {
+                fixes.push({
+                    issue: '',
+                    fix: ''
+                });
+            }*/
+
+            if (fingerprint.fonts.length > 3) {
+                fixes.push({
+                    issue: 'High font uniqueness',
+                    fix: 'Remove uncommon developer fonts like Fira Code, or use a privacy focused browser.'
+                });
+            }
+
+            if (fingerprint.webgl.renderer && fingerprint.webgl.renderer.toLowerCase() !== 'unavailable') {
+                fixes.push({
+                    issue: 'GPU reveals hardware details',
+                    fix: 'Use a privacy focused browser to obscure GPU information.'
+                });
+            }
+
+            if (fingerprint.languages.length > 2) {
+                fixes.push({
+                    issue: 'High quantity of installed languages',
+                    fix: 'Consider deleting unnecessary languages.'
+                });
+            }
+
+            if (fixes.length === 0) {
+                fixes.push({
+                    issue: 'No major fingerprinting risks detected',
+                    fix: 'Good job.'
+                });
+            }
+
+            section.innerHTML = `<h2>Fix My Fingerprint</h2>` +
+                fixes.map(f =>
+                    `<div style="margin-bottom: 1rem">
+                        <strong>${f.issue}</strong>
+                        <p style="margin: 0.2rem 0; color: var(--muted)">${f.fix}</p>
+                    </div>`
+                ).join('');
+
+            document.getElementById('results').prepend(section);
+        }
+
         document.getElementById("analyseBtn").onclick = async () => {
             const fonts = detectFonts();
             const webgl = getWebGLInfo();
@@ -319,7 +424,9 @@
                     width: screen.width,
                     height: screen.height,
                     colorDepth: screen.colorDepth,
-                    dpr: window.devicePixelRatio
+                    dpr: window.devicePixelRatio,
+                    gamut: getColorGamut(),
+                    range: getDynamicRange()
                 },
                 timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
                 languages: navigator.languages,
@@ -332,39 +439,65 @@
                 webgl
             };
 
+            renderFixes(fingerprint);
+
             const hash = await hashFingerprint(fingerprint);
             const score = calculateScore(fingerprint);
 
-            //document.getElementById("hashDisplay").textContent = hash.slice(0, 38) + "...";
             document.getElementById("hashDisplay").textContent = hash;
             document.getElementById("scoreDisplay").textContent = `${score}/100 (${score>70?"High":score>30?"Moderate":"Low"} uniqueness)`;
 
             document.getElementById("cards").innerHTML = "";
 
-            addCard("Screen", `${fingerprint.screen.width}x${fingerprint.screen.height}, Colour Depth ${fingerprint.screen.colorDepth}, DPR ${fingerprint.screen.dpr}`, "Medium", "Unusual screen setups can increase fingerprint uniqueness.");
+            addCard("Audio", fingerprint.audio, "High Threat", "The hash generated by the audio compressor can determine audio stacks.");
 
-            addCard("Fonts", `${fonts.length} detected`, "High", "Font combinations are often highly unique and stable.");
+            addCard("Fonts", `${fonts.length} detected`, "High Threat", "Font combinations are often highly unique and stable.");
+            
+            addCard("Canvas", fingerprint.canvas, "High Threat", "The hash generated by the canvas can reveal GPU drivers and OS graphics stacks.");
 
-            addCard("GPU", webgl.renderer, "Medium", "Graphics hardware helps distinguish devices.");
+            addCard('Screen', `${fingerprint.screen.width}x${fingerprint.screen.height}, ${fingerprint.screen.dpr} DPR`, "Medium Threat", "Unusual screen setups can increase fingerprint uniqueness.");
+            
+            addCard('Colour', `${fingerprint.screen.colorDepth}-bit, ${fingerprint.screen.gamut}, ${fingerprint.screen.range}`, "Medium Threat", "Unusual colour setups can reveal device characteristics.");
+            
+            addCard("GPU", fingerprint.webgl.renderer, "Medium Threat", "Graphics hardware helps distinguish devices.");
+            
+            addCard("CPU Threads", fingerprint.hardwareConcurrency, "Medium Threat", "CPU thread count can narrow device types.");
+            
+            addCard("RAM Count", fingerprint.memory, "Medium Threat", "Unusual RAM counts can often distinguish devices.");
 
-            addCard("Locale", fingerprint.timezone, "Low", "Common locales offer little uniqueness but still contribute.");
-
-            addCard("Languages", fingerprint.languages.join(", "), "Low", "Installed languages are rarely changed, but may still be a factor.");
-
-            addCard("Hardware Threads", fingerprint.hardwareConcurrency, "Medium", "CPU thread count can narrow device types.");
-
-            addCard("Memory Capacity", fingerprint.memory, "Medium", "Unusual RAM counts can often distinguish devices.");
-
-            addCard("Touchscreen", `${fingerprint.touch} touchpoints`, "Medium", "The number of touchpoints can differentiate device types.");
-
-            addCard("Canvas", fingerprint.canvas, "High", "The hash generated by the canvas can reveal GPU drivers and OS graphics stacks.");
-
-            addCard("Audio", fingerprint.audio, "High", "The hash generated by the audio compressor can determine audio stacks.");
+            addCard("Languages", fingerprint.languages.join(", "), "Low Threat", "Installed languages are rarely changed, but may still be a factor.");
+            
+            addCard("Touchscreen", `${fingerprint.touch} touchpoints`, "Low Threat", "The number of touchpoints can differentiate device types.");
+            
+            addCard("Locale", fingerprint.timezone, "Low Threat", "Common locales offer little uniqueness but still contribute.");
 
             document.getElementById("results").style.display = "block";
 
         };
     </script>
+
+    <script>
+document.addEventListener("click", async (e) => {
+  const codeEl = e.target.closest("code");
+  if (!codeEl) return;
+
+  const originalText = codeEl.textContent;
+
+  try {
+    await navigator.clipboard.writeText(originalText);
+
+    codeEl.textContent = "Copied!";
+    codeEl.classList.add("copied");
+
+    setTimeout(() => {
+      codeEl.textContent = originalText;
+      codeEl.classList.remove("copied");
+    }, 800);
+  } catch (err) {
+    console.error("Clipboard copy failed:", err);
+  }
+});
+</script>
+
 </body>
 </html>
-
