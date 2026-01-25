@@ -94,11 +94,17 @@
         }
 
         code {
+            display: inline-block;
             background: rgba(0, 0, 0, 0.05);
             color: var(--text);
             padding: 0.2rem 0.4rem;
             border-radius: var(--radius);
             font-size: 0.9rem;
+                        
+            max-width: 90%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
 
         .icon {
@@ -169,6 +175,77 @@
             } : {vendor: "Hidden", renderer: "Hidden"};
         }
 
+        function getCanvasFingerprint() {
+            try {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                canvas.width = 300;
+                canvas.height = 150;
+
+                const gradient = ctx.createLinearGradient(0,0, 300, 150);
+                gradient.addColorStop(0, '#ff00ff');
+                gradient.addColorStop(1, '#00ffff');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.textBaseline = 'top';
+                ctx.font = "16px 'Arial'";
+                ctx.fillStyle = '#000';
+                ctx.fillText('Fingerprint Test 123!', 10, 10);
+
+                ctx.font = "18px 'Times New Roman'";
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.fillText('Canvas entropy', 10, 40);
+
+                ctx.strokeStyle = '#ff9900';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(200, 75, 40, 0, MATH.PI * 2);
+                ctx.stroke();
+
+                ctx.fillStyle = 'rgba(102, 204, 0, 0.6)';
+                ctx.fillRect(220, 20, 50, 60);
+
+                return canvas.toDataURL();
+            } catch {
+                return 'Canvas Unavailable';
+            }
+        }
+
+        async function getAudioFingerprint() {
+            try {
+                const audioCtx = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(1, 44100, 44100);
+
+                const oscillator = audioCtx.createOscillator();
+                oscillator.type = "triangle";
+                oscillator.frequency.value = 10000;
+
+                const compressor = audioCtx.createDynamicsCompressor();
+                compressor.threshold.value = -50;
+                compressor.knee.value = 40;
+                compressor.ratio.value = 12;
+                compressor.attack.value = 0;
+                compressor.release.value = 0.25;
+
+                oscillator.connect(compressor);
+                compressor.connect(audioCtx.destination);
+                oscillator.start(0);
+
+                const buffer = await audioCtx.startRendering();
+                const data = buffer.getChannelData(0);
+
+                let sum = 0;
+                for (let i = 4500;i < 5000; i++) {
+                    sum += Math.abs(data[i])
+                }
+
+                return sum.toString();
+            } catch {
+                return "Audio Context Unavailable";
+            }
+        }
+
         function getMediaDeviceInfo() {
             try {
                 const devices = navigator.mediaDevices.enumerateDevices();
@@ -189,8 +266,8 @@
             }
         }
 
-        //const mediaInfo = JSON.stringify(getMediaDeviceInfo(), null, 2);
-        //alert(mediaInfo);
+        const mediaInfo = JSON.stringify(getMediaDeviceInfo(), null, 2);
+        alert(mediaInfo);
 
         const featureSupport = {
             usb: "usb" in navigator,
@@ -200,7 +277,7 @@
             share: "share" in navigator,
         };
 
-        //alert(featureSupport.usb);
+        alert(featureSupport.usb);
 
         function calculateScore(data) {
             let score = 0;
@@ -247,6 +324,10 @@
                 timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
                 languages: navigator.languages,
                 hardwareConcurrency: navigator.hardwareConcurrency,
+                memory: navigator.deviceMemory,
+                touch: navigator.maxTouchPoints,
+                canvas: getCanvasFingerprint(),
+                audio: await getAudioFingerprint(),
                 fonts,
                 webgl
             };
@@ -254,8 +335,8 @@
             const hash = await hashFingerprint(fingerprint);
             const score = calculateScore(fingerprint);
 
-            document.getElementById("hashDisplay").textContent = hash.slice(0, 38) + "...";
-            //document.getElementById("hashDisplay").textContent = hash;
+            //document.getElementById("hashDisplay").textContent = hash.slice(0, 38) + "...";
+            document.getElementById("hashDisplay").textContent = hash;
             document.getElementById("scoreDisplay").textContent = `${score}/100 (${score>70?"High":score>30?"Moderate":"Low"} uniqueness)`;
 
             document.getElementById("cards").innerHTML = "";
@@ -266,12 +347,19 @@
 
             addCard("GPU", webgl.renderer, "Medium", "Graphics hardware helps distinguish devices.");
 
-            addCard("Locale", fingerprint.timezone + " / " + fingerprint.languages.join(", "), "Low", "Common locales offer little uniqueness but still contribute.");
+            addCard("Locale", fingerprint.timezone, "Low", "Common locales offer little uniqueness but still contribute.");
+
+            addCard("Languages", fingerprint.languages.join(", "), "Low", "Installed languages are rarely changed, but may still be a factor.");
 
             addCard("Hardware Threads", fingerprint.hardwareConcurrency, "Medium", "CPU thread count can narrow device types.");
 
-            //alert(navigator.deviceMemory);
-            //alert(navigator.maxTouchPoints);
+            addCard("Memory Capacity", fingerprint.memory, "Medium", "Unusual RAM counts can often distinguish devices.");
+
+            addCard("Touchscreen", `${fingerprint.touch} touchpoints`, "Medium", "The number of touchpoints can differentiate device types.");
+
+            addCard("Canvas", fingerprint.canvas, "High", "The hash generated by the canvas can reveal GPU drivers and OS graphics stacks.");
+
+            addCard("Audio", fingerprint.audio, "High", "The hash generated by the audio compressor can determine audio stacks.");
 
             document.getElementById("results").style.display = "block";
 
@@ -279,4 +367,3 @@
     </script>
 </body>
 </html>
-
