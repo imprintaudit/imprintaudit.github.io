@@ -267,7 +267,7 @@
         }
 
         const mediaInfo = JSON.stringify(getMediaDeviceInfo(), null, 2);
-        alert(mediaInfo);
+        //alert(mediaInfo);
 
         const featureSupport = {
             usb: "usb" in navigator,
@@ -277,7 +277,7 @@
             share: "share" in navigator,
         };
 
-        alert(featureSupport.usb);
+        //alert(featureSupport.usb);
 
         function calculateScore(data) {
             let score = 0;
@@ -367,3 +367,4 @@
     </script>
 </body>
 </html>
+
