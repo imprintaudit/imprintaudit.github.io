@@ -69,7 +69,7 @@
             color: var(--muted);
         }
 
-        #analyseBtn {
+        .blueBtn {
             background: var(--accent);
             border: none;
             padding: 0.8rem 2rem;
@@ -82,7 +82,7 @@
             gap: 1rem;
         }
 
-        #analyseBtn:hover {
+        .blueBtn:hover {
             background: var(--accent-hover);
         }
 
@@ -272,7 +272,7 @@ body {
             <h1>What Does Your Browser Reveal About You?</h1>
         <svg class="icon" id="main-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M112 320C112 205.1 205.1 112 320 112C383.1 112 439.6 140.1 477.8 184.5C486.4 194.6 501.6 195.7 511.6 187.1C521.6 178.5 522.8 163.3 514.2 153.3C467.3 98.6 397.7 64 320 64C178.6 64 64 178.6 64 320L64 360C64 373.3 74.7 384 88 384C101.3 384 112 373.3 112 360L112 320zM570.5 267.1C567.8 254.1 555 245.8 542.1 248.6C529.2 251.4 520.8 264.1 523.6 277C526.5 290.9 528.1 305.3 528.1 320.1L528.1 360.1C528.1 373.4 538.8 384.1 552.1 384.1C565.4 384.1 576.1 373.4 576.1 360.1L576.1 320.1C576.1 302 574.2 284.3 570.6 267.2zM320 144C301 144 282.6 147 265.5 152.6C250.3 157.6 246.8 176.3 257.2 188.5C264.3 196.8 276 199.3 286.6 196.4C297.2 193.5 308.4 192 320 192C390.7 192 448 249.3 448 320L448 344.9C448 370.1 446.5 395.2 443.6 420.2C441.9 434.8 453 448 467.8 448C479.6 448 489.7 439.4 491.1 427.7C494.4 400.3 496.1 372.7 496.1 345L496.1 320.1C496.1 222.9 417.3 144.1 320.1 144.1zM214.7 212.7C205.6 202.1 189.4 201.3 180.8 212.3C157.7 242.1 144 279.4 144 320L144 344.9C144 369.1 141.4 393.3 136.2 416.8C132.8 432.4 144.1 447.9 160.1 447.9C170.6 447.9 180 440.9 182.3 430.6C188.7 402.5 192 373.8 192 344.8L192 319.9C192 292.7 200.5 267.5 214.9 246.8C222.1 236.4 222.9 222.2 214.7 212.6zM320 224C267 224 224 267 224 320L224 344.9C224 380.8 219.4 416.4 210.2 451C206.4 465.3 216.9 480 231.7 480C241.2 480 249.6 473.8 252.1 464.6C262.6 425.6 268 385.4 268 344.9L268 320C268 291.3 291.3 268 320 268C348.7 268 372 291.3 372 320L372 344.9C372 381.2 368.5 417.3 361.6 452.8C358.9 466.7 369.3 480 383.4 480C393.6 480 402.4 473 404.4 463C412.1 424.2 416 384.7 416 344.9L416 320C416 267 373 224 320 224zM344 320C344 306.7 333.3 296 320 296C306.7 296 296 306.7 296 320L296 344.9C296 404.8 285 464.2 263.5 520.1L257.6 535.4C252.8 547.8 259 561.7 271.4 566.4C283.8 571.1 297.7 565 302.4 552.6L308.3 537.3C331.9 475.9 344 410.7 344 344.9L344 320z"/></svg>
     </header>
-    <button id="analyseBtn" aria-label="Analyse My Browser"><b>Analyse My Browser</b></button>
+    <button id="analyseBtn" class="blueBtn" aria-label="Analyse My Browser"><b>Analyse My Browser</b></button>
     
     <div class="results" id="results">
         <div class="summary">
@@ -280,9 +280,9 @@ body {
             <p class="summary-p" style="white-space: nowrap;"><strong>Hash:</strong> <code id="hashDisplay" aria-live="polite" aria-atomic="true"></code></p>
             <p class="explanation">This is an encoding of every fingerprinting metric displayed on this site.</p>
             <p class="summary-p"><strong>Uniqueness Score:</strong> <code id="scoreDisplay" aria-live="polite" aria-atomic="true"></code></p>
-            <p class="explanation">This estimates how distinguishable your browser is in a crowd.</p>
+            <p class="explanation">This estimates how distinguishable your browser is in a crowd based on public fingerprinting research.</p>
+            <button id="downloadFingerprint" class="blueBtn">Download fingerprint (JSON)</button>
         </div>
-        
         <div class="cards" id="cards"></div>
     </div>
 </main>
@@ -301,21 +301,22 @@ body {
 
 
 
-<div class="modal" id="legalModal">
+<div class="modal" id="legalModal" role="dialog" aria-labelledby="legalTitle">
     <div class="modal-content">
         <button class="closeModal" aria-label="Close modal">&times;</button>
-        <h2>Legal Disclaimer</h2>
+        <h2 id="legalTitle">Legal Disclaimer</h2>
         <p>This tool is for educational purposes only, and it does not collect, store, transmit, or share any user data. You are responsible for how you use the information provided. Use at your own risk.</p>
         <p>Results are estimates of browser fingerprint uniqueness; they do not identify you personally.</p>
         <p>No coookies or local storage is used. There is no server-side logging or analytics, and all data is processed client-side. All information that is collected is displayed to you.</p>
-        <p>Imprint is fully open source, and the source code can be viewed <a href="https://github.com/imprintaudit/imprintaudit.github.io">here</a>.</p>
+        <p>No network requests are made, and Imprint works offline after load. No fingerprint is stored or transmitted</p>
+        <p>Imprint is fully open source. <a href="https://github.com/imprintaudit/imprintaudit.github.io">View the source code</a></p>
     </div>
 </div>
 
-<div class="modal" id="changelogModal">
+<div class="modal" id="changelogModal" role="dialog" aria-labelledby="changelogTitle">
   <div class="modal-content">
     <button class="closeModal" aria-label="Close modal">&times;</button>
-    <h2>Changelog</h2>
+    <h2 id="changelogTitle">Changelog</h2>
     <ul>
       <li><strong>v1.2 (Jan 2026)</strong> Added dynamic range and color gamut detection.</li>
       <li><strong>v1.1 (Dec 2025)</strong> Audio fingerprinting and WebGL detection improved.</li>
@@ -324,10 +325,10 @@ body {
   </div>
 </div>
 
-<div class="modal" id="feedbackModal">
+<div class="modal" id="feedbackModal" role="dialog" aria-labelledby="feedbackTitle">
   <div class="modal-content">
     <button class="closeModal" aria-label="Close modal">&times;</button>
-    <h2>Feedback / Bug Report</h2>
+    <h2 id="feedbackTitle">Feedback / Bug Report</h2>
     <p>If you encounter a bug or have feedback, please describe it below:</p>
     <textarea id="feedbackText" rows="5" style="width:100%; padding:0.5rem; border-radius:var(--radius); border:1px solid #ccc; font-family:inherit; background: var(--code);"></textarea>
     <button id="submitFeedback" style="margin-top:0.5rem; background:var(--accent); color:white; border:none; padding:0.5rem 1rem; border-radius:var(--radius); cursor:pointer;">Submit</button>
@@ -337,6 +338,8 @@ body {
 
 
 <script>
+let lastFingerprint = null;
+
 const modals = {
   legalLink: 'legalModal',
   changelogLink: 'changelogModal',
@@ -677,11 +680,17 @@ document.getElementById('submitFeedback').addEventListener('click', () => {
             if (data.webgl.renderer !== "unavailable") score += 20;
             if (data.hardwareConcurrency >= 8) score += 15;
             if (data.languages.length > 1) score += 15;
+            score = Math.min(score, 100);
             return score;
         }
 
         function riskBadge(level) {
-            return `<span class="badge ${level.toLowerCase()}">${level}</span>`;
+            const cls =
+                level.toLowerCase().includes("high") ? "high" :
+                level.toLowerCase().includes("medium") ? "medium" :
+                "low";
+
+            return `<span class="badge ${cls}">${level}</span>`;
         }
 
         function addCard(title, value, risk, explanation) {
@@ -745,7 +754,7 @@ document.getElementById('submitFeedback').addEventListener('click', () => {
                 });
             }*/
 
-            if (fingerprint.fonts.length > 3) {
+            if (Number.isFinite(fingerprint.fonts?.length) && fingerprint.fonts.length > 3) {
                 fixes.push({
                     issue: 'High font uniqueness',
                     fix: 'Remove uncommon developer fonts like Fira Code, or use a privacy focused browser.'
@@ -763,6 +772,13 @@ document.getElementById('submitFeedback').addEventListener('click', () => {
                 fixes.push({
                     issue: 'High quantity of installed languages',
                     fix: 'Consider deleting unnecessary languages.'
+                });
+            }
+
+            if (Number.isFinite(fingerprint.hardwareConcurrency) && fingerprint.hardwareConcurrency % 2 !== 0) {
+                fixes.push({
+                    issue: 'Unusual number of CPU threads',
+                    fix: 'Consider using a privacy focused browser to obfuscate CPU threads.'
                 });
             }
 
@@ -785,10 +801,28 @@ document.getElementById('submitFeedback').addEventListener('click', () => {
         }
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' && document.activeElement === document.body) {
                 document.getElementById('analyseBtn').click();
             }
         });
+
+        document.getElementById("downloadFingerprint").addEventListener("click", () => {
+            if (!lastFingerprint) return;
+
+            const data = JSON.stringify(deepSort(lastFingerprint), null, 2);
+            const blob = new Blob([data], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "browser-fingerprint.json";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            URL.revokeObjectURL(url);
+        });
+
 
         document.getElementById("analyseBtn").onclick = async () => {
             const fonts = detectFonts();
@@ -828,6 +862,8 @@ document.getElementById('submitFeedback').addEventListener('click', () => {
                 webgl
             };
 
+            lastFingerprint = fingerprint;
+
             renderFixes(fingerprint);
 
             const hash = await hashFingerprint(fingerprint);
@@ -842,7 +878,7 @@ document.getElementById('submitFeedback').addEventListener('click', () => {
 
             addCard("Fonts", `${fingerprint.fonts.length} detected`, "High Threat", "Font combinations are often highly unique and stable.");
             
-            addCard("Canvas", fingerprint.canvas, "High Threat", "The hash generated by the canvas can reveal GPU drivers and OS graphics stacks.");
+            addCard("Canvas", fingerprint.canvas, "High Threat", "The hash generated by a high-entropy canvas can reveal GPU drivers and OS graphics stacks.");
 
             addCard("Accessibility", `reduced motion: ${fingerprint.accessibility.reducedMotion}, high contrast: ${fingerprint.accessibility.contrast}, reduced data: ${fingerprint.accessibility.reducedData}`, "High Threat", "Accessibility preferences can be very unique when viewed in combination.");
 
