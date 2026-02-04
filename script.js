@@ -579,7 +579,8 @@ const walkthroughSteps = [
     fixes: "hidden",
     high: "hidden",
     medium: "hidden",
-    low: "hidden"
+    low: "hidden",
+    scroll: "high"
   },
   {
     title: "High-risk identifiers",
@@ -588,7 +589,8 @@ const walkthroughSteps = [
     fixes: "grey",
     high: "show",
     medium: "hidden",
-    low: "hidden"
+    low: "hidden",
+    scroll: "high"
   },
   {
     title: "Medium-risk identifiers",
@@ -597,7 +599,8 @@ const walkthroughSteps = [
     fixes: "grey",
     high: "grey",
     medium: "show",
-    low: "hidden"
+    low: "hidden",
+    scroll: "medium"
   },
   {
     title: "Low-risk identifiers",
@@ -606,7 +609,8 @@ const walkthroughSteps = [
     fixes: "grey",
     high: "grey",
     medium: "grey",
-    low: "show"
+    low: "show",
+    scroll: "low"
   },
   {
     title: "Fixing your fingerprint",
@@ -615,15 +619,12 @@ const walkthroughSteps = [
     fixes: "show",
     high: "grey",
     medium: "grey",
-    low: "grey"
+    low: "grey",
+    scroll: "high"
   }
 ];
 
 let walkthroughIndex = 0;
-
-/* =====================================================
-   CARD ANNOTATION (RUNS AFTER analyse)
-===================================================== */
 
 function tagCardsByRisk() {
   document.querySelectorAll(".card").forEach(card => {
@@ -640,8 +641,6 @@ function tagCardsByRisk() {
 
 function applyState(el, state) {
   if (!el) return;
-
-  el.style.transition = "opacity 0.3s ease, filter 0.3s ease";
 
   if (state === "show") {
     el.style.visibility = "visible";
@@ -662,33 +661,24 @@ function applyState(el, state) {
   }
 }
 
-
-/* =====================================================
-   WALKTHROUGH RENDER
-===================================================== */
-
 function renderWalkthroughStep() {
   document.getElementById("walkthrough").hidden = false;
   const step = walkthroughSteps[walkthroughIndex];
   const state = step;
 
-  // Walkthrough text
   document.getElementById("stepTitle").textContent = step.title || "";
   document.getElementById("stepDescription").textContent = step.text || "";
 
-  // SUMMARY
   applyState(
     document.getElementById("summary"),
     state.summary || "show"
   );
 
-  // FIXES
   applyState(
     document.getElementById("fixes"),
     state.fixes || "show"
   );
 
-  // CARDS BY RISK
   document.querySelectorAll(".card").forEach(card => {
     const risk = card.dataset.risk;
     applyState(card, state[risk] || "show");
@@ -698,7 +688,9 @@ function renderWalkthroughStep() {
     document.getElementById("walkthrough"), "show"
   );
 
-  // Controls
+
+  scroll(state.scroll);
+
   document.getElementById("prevStep").disabled = walkthroughIndex === 0;
   document.getElementById("nextStep").textContent =
     walkthroughIndex === walkthroughSteps.length - 1
@@ -711,26 +703,20 @@ function renderWalkthroughStep() {
 
 function endWalkthrough() {
   document.getElementById("walkthrough").hidden = true;
-  // SUMMARY
+
   applyState(
     document.getElementById("summary"), "show"
   );
 
-  // FIXES
   applyState(
     document.getElementById("fixes"), "show"
   );
 
-  // CARDS BY RISK
   document.querySelectorAll(".card").forEach(card => {
     const risk = card.dataset.risk;
     applyState(card, "show");
   });
 }
-
-/* =====================================================
-   WALKTHROUGH CONTROLS
-===================================================== */
 
 document.getElementById("nextStep").onclick = () => {
   if (walkthroughIndex < walkthroughSteps.length - 1) {
@@ -750,9 +736,6 @@ document.getElementById("prevStep").onclick = () => {
 
 document.getElementById("skipWalkthrough").onclick = endWalkthrough;
 
-/* =====================================================
-   HOOK INTO EXISTING ANALYSE BUTTON
-===================================================== */
 
 const originalAnalyse = document.getElementById("analyseBtn").onclick;
 
@@ -764,3 +747,23 @@ document.getElementById("analyseBtn").onclick = async () => {
   walkthroughIndex = 0;
   renderWalkthroughStep();
 };
+
+
+function scroll(risk) {
+    const headerHeight =
+        document.getElementById("walkthrough")?.offsetHeight || 0;
+
+    const card = document.querySelector(`.card[data-risk="${risk}"]`);
+    if (!card) return;
+
+    const y =
+        card.getBoundingClientRect().top +
+        window.pageYOffset -
+        headerHeight -
+        20; // optional extra padding
+
+    window.scrollTo({
+        top: y,
+        behavior: "smooth"
+    });
+}
