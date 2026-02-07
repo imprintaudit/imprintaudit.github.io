@@ -573,18 +573,28 @@ document.addEventListener("click", async (e) => {
 
 const walkthroughSteps = [
   {
-    title: "Fingerprint generated",
-    text: "Your browser fingerprint has been calculated below.",
+    title: "What is a browser fingerprint?",
+    text: "Every website you visit can see technical details about your browser and device, such as screen size, fonts, settings, and more. When combined, these create a 'browser fingerprint' that lets websites recognise and track your device, even without cookies.",
+    summary: "hidden",
+    fixes: "hidden",
+    high: "hidden",
+    medium: "hidden",
+    low: "hidden",
+    scroll: "none"
+  },
+  {
+    title: "Your fingerprint",
+    text: "Your browser fingerprint has been determined. You can view it encoded into a string, or download .json file containing more information. There is also a score that estimates how rare your fingerprint is. Higher scores mean fewer people look like you, so tracking is easier.",
     summary: "show",
     fixes: "hidden",
     high: "hidden",
     medium: "hidden",
     low: "hidden",
-    scroll: "high"
+    scroll: "summary"
   },
   {
-    title: "High-risk identifiers",
-    text: "These signals are highly stable and uniquely identifying.",
+    title: "High threat identifiers",
+    text: "These signals tend to be very stable and very unique, so they probably make the biggest contribution to tracking you.",
     summary: "grey",
     fixes: "grey",
     high: "show",
@@ -593,8 +603,8 @@ const walkthroughSteps = [
     scroll: "high"
   },
   {
-    title: "Medium-risk identifiers",
-    text: "These narrow down your device and browser.",
+    title: "Medium threat identifiers",
+    text: "These signals are either less stable, or less unique, so they are probably less useful for tracking you.",
     summary: "grey",
     fixes: "grey",
     high: "grey",
@@ -603,8 +613,8 @@ const walkthroughSteps = [
     scroll: "medium"
   },
   {
-    title: "Low-risk identifiers",
-    text: "These add smaller amounts of entropy.",
+    title: "Low threat identifiers",
+    text: "These signals are both low stability and low uniqueness, so they are not very useful for tracking you. However, it is still beneficial to be aware of them.",
     summary: "grey",
     fixes: "grey",
     high: "grey",
@@ -614,13 +624,13 @@ const walkthroughSteps = [
   },
   {
     title: "Fixing your fingerprint",
-    text: "Based on your results, these changes can reduce uniqueness.",
+    text: "These suggestions are based on your fingerprint, and will help you blend in better with common browser setups.",
     summary: "grey",
     fixes: "show",
     high: "grey",
     medium: "grey",
     low: "grey",
-    scroll: "high"
+    scroll: "fixes"
   }
 ];
 
@@ -750,10 +760,23 @@ document.getElementById("analyseBtn").onclick = async () => {
 
 
 function scroll(risk) {
-    const headerHeight =
-        document.getElementById("walkthrough")?.offsetHeight || 0;
+    let card;
 
-    const card = document.querySelector(`.card[data-risk="${risk}"]`);
+    const headerHeight =
+    document.getElementById("walkthrough")?.offsetHeight || 0;
+    
+    if (risk == "none") {
+        return;
+    }
+    
+    if (risk == "fixes") {
+        card = document.getElementById("fixmyfingerprint");
+    } else if (risk == "summary") {
+        card = document.getElementById("summary");
+    } else {
+        card = document.querySelector(`.card[data-risk="${risk}"]`);
+    }
+    
     if (!card) return;
 
     const y =
