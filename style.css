@@ -259,3 +259,26 @@ footer {
   filter: blur(1px);
   transition: opacity 0.3s ease, filter 0.3s ease;
 }
+
+.walkthrough-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .walkthrough-buttons {
+    flex-direction: column;
+  }
+  #prevStep {
+    margin-top: 0.2rem;
+  }
+  #nextStep {
+    margin-top: 0.1rem;
+  }
+  #skipWalkthrough {
+    margin-top: 0.1rem;
+  }
+}
