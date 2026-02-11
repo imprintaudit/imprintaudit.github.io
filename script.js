@@ -83,7 +83,7 @@ document.getElementById('submitFeedback').addEventListener('click', () => {
     return;
   }
 
-  messageEl.textContent = "Thank you! Feedback submitted (demo mode).";
+  messageEl.textContent = "Thank you! Feedback submitted!";
   document.getElementById('feedbackText').value = '';
 });
 
@@ -312,8 +312,12 @@ function calculateScore(data) {
 }
 
 function riskBadge(level) {
+    if (level === "") {
+        return;
+    }
+
     const cls =
-        level.toLowerCase().includes("high") ? "high" :
+        level.toLowerCase().includes("high") || level.toLowerCase().includes("hard") ? "high" :
         level.toLowerCase().includes("medium") ? "medium" :
         "low";
 
@@ -323,6 +327,7 @@ function riskBadge(level) {
 function addCard(title, value, risk, explanation) {
     const card = document.createElement("div");
     card.className = "card";
+    card.id = id= title.toLowerCase();
     card.innerHTML = `
         <h3>${title} ${riskBadge(risk)}</h3>
         <code>${value}</code>
@@ -367,64 +372,197 @@ function renderFixes(fingerprint) {
     section.id = 'fixes';
     let fixes = [];
 
-    if (!['1920x1080', '1366x768', '1536x864'].includes(`${fingerprint.screen.width}x${fingerprint.screen.height}`)) {
-        fixes.push({
-            issue: 'Uncommon screen resolution',
-            fix: 'Use more common window sizes like 1920x1080 or 1366x768 to blend in with typical users.'
-        });
-    }
-
-    /*if () {
-        fixes.push({
-            issue: '',
-            fix: ''
-        });
-    }*/
-
-    if (Number.isFinite(fingerprint.fonts?.length) && fingerprint.fonts.length > 3) {
-        fixes.push({
-            issue: 'High font uniqueness',
-            fix: 'Remove uncommon developer fonts like Fira Code, or use a privacy focused browser.'
-        });
-    }
-
+    
     if (fingerprint.webgl.renderer && fingerprint.webgl.renderer.toLowerCase() !== 'unavailable') {
         fixes.push({
             issue: 'GPU reveals hardware details',
-            fix: 'Use a privacy focused browser to obscure GPU information.'
+            fix: 'Use a privacy focused browser to obscure GPU information.',
+            related: 'gpu',
+            ease: 'Easy Fix'
         });
     }
-
-    if (fingerprint.languages.length > 2) {
-        fixes.push({
-            issue: 'High quantity of installed languages',
-            fix: 'Consider deleting unnecessary languages.'
-        });
-    }
-
+    
     if (Number.isFinite(fingerprint.hardwareConcurrency) && fingerprint.hardwareConcurrency % 2 !== 0) {
         fixes.push({
             issue: 'Unusual number of CPU threads',
-            fix: 'Consider using a privacy focused browser to obfuscate CPU threads.'
+            fix: 'Consider using a privacy focused browser to obfuscate CPU threads.',
+            related: 'cpu threads',
+            ease: 'Easy Fix'
+        });
+    }
+    
+    if (fingerprint.audio && fingerprint.audio !== 'unavailable') {
+        fixes.push({
+            issue: 'Audio fingerprinting enabled',
+            fix: 'Consider using a privacy focused browser to randomise audio context output.',
+            related: 'audio',
+            ease: 'Easy Fix'
+        });
+    }
+    
+    if (fingerprint.canvas && fingerprint.canvas !== 'unavailable') {
+        fixes.push({
+            issue: 'Canvas fingerprinting detected',
+            fix: 'Consider using a browser or extension that prompts or randomizes canvas readouts.',
+            related: 'canvas',
+            ease: 'Easy Fix'
+        });
+    }
+    
+    
+    if (
+        fingerprint.supports &&
+            (fingerprint.supports.filter ||
+                fingerprint.supports.container ||
+                fingerprint.supports.tech ||
+                fingerprint.supports.accent)
+            ) {
+                fixes.push({
+                    issue: 'Advanced CSS feature support',
+                    fix: 'Consider using a privacy focused browser to standardise reported support.',
+                    related: 'css supports',
+                    ease: 'Easy Fix'
+                });
+            }
+            
+    if (Array.isArray(fingerprint.mime) && fingerprint.mime.length > 5) {
+        fixes.push({
+            issue: 'Extensive MIME type support',
+            fix: "Consider clearing your browser's supported file types",
+            related: 'mime types',
+            ease: 'Medium Fix'
+        });
+    }
+            
+    if (fingerprint.languages.length > 2) {
+        fixes.push({
+            issue: 'High quantity of installed languages',
+            fix: 'Consider deleting unnecessary languages.',
+            related: 'languages',
+            ease: 'Medium Fix'
+        });
+    }
+    
+    if (
+        fingerprint.timezone &&
+        fingerprint.languages &&
+        fingerprint.languages.length &&
+        !fingerprint.timezone.toLowerCase().includes(fingerprint.languages[0].split('-')[0])
+    ) {
+        fixes.push({
+            issue: 'Locale and timezone mismatch',
+            fix: 'Check your settings to ensure your locale and timezone match.',
+            related: 'locale',
+            ease: 'Medium Fix'
+        });
+    }
+    
+    if (Number.isFinite(fingerprint.fonts?.length) && fingerprint.fonts.length > 3) {
+        fixes.push({
+            issue: 'High font uniqueness',
+            fix: 'Remove uncommon developer fonts like Fira Code, or use a privacy focused browser.',
+            related: 'fonts',
+            ease: 'Medium Fix'
+        });
+    }
+    
+    if (Number.isFinite(fingerprint.touch) && fingerprint.touch > 0 && fingerprint.touch !== 5) {
+        fixes.push({
+            issue: 'Unusual number of touchpoints',
+            fix: 'Consider using a screen or device with a more standard number of touchpoints.',
+            related: 'touchscreen',
+            ease: 'Hard Fix'
+        });
+    }
+    
+    if (
+        fingerprint.accessibility &&
+        (fingerprint.accessibility.reducedMotion ||
+            fingerprint.accessibility.contrast ||
+            fingerprint.accessibility.reducedData)
+        ) {
+            fixes.push({
+                issue: 'Unique accessibility preference combination',
+                fix: 'Consider using accessibility defaults if privacy is critical.',
+                related: 'accessibility',
+                ease: 'Hard Fix'
+            });
+    }
+
+    if (Number.isFinite(fingerprint.screen?.dpr) && ![1, 2].includes(fingerprint.screen.dpr)) {
+        fixes.push({
+            issue: 'Uncommon device pixel ratio',
+            fix: 'Consider using a screen with a more common DPR.',
+            related: 'screen',
+            ease: 'Hard Fix'
+        });
+    }
+    
+    if (Number.isFinite(fingerprint.screen?.colorDepth) && fingerprint.screen.colorDepth !== 24) {
+        fixes.push({
+            issue: 'Unusual colour depth',
+            fix: 'Consider using a screen with a more common colour depth.',
+            related: 'colour',
+            ease: 'Hard Fix'
+        });
+    }
+    
+    if (fingerprint.screen?.gamut && fingerprint.screen.gamut !== 'srgb') {
+        fixes.push({
+            issue: 'Wide colour gamut detected',
+            fix: 'Consider using a screen with a more common colour gamut.',
+            related: 'colour',
+            ease: 'Hard Fix'
         });
     }
 
+    if (!['1920x1080', '1366x768', '1536x864'].includes(`${fingerprint.screen.width}x${fingerprint.screen.height}`)) {
+        fixes.push({
+            issue: 'Uncommon screen resolution',
+            fix: 'Use more common window sizes like 1920x1080 or 1366x768 to blend in with typical users.',
+            related: 'screen',
+            ease: 'Hard Fix'
+        });
+    }
+
+    if (
+        Number.isFinite(fingerprint.memory) &&
+        ![4, 8, 16].includes(fingerprint.memory)
+    ) {
+        fixes.push({
+            issue: 'Uncommon RAM size reported',
+            fix: 'Consider using a more standard RAM count.',
+            related: 'ram count',
+            ease: 'Hard Fix'
+        });
+    }
+    
     if (fixes.length === 0) {
         fixes.push({
             issue: 'No major fingerprinting risks detected',
-            fix: 'Good job.'
+            fix: 'Good job.',
+            related: 'fonts',
+            ease: ''
         });
     }
-
+    
     section.innerHTML = `<h2>Fix My Fingerprint</h2>` +
-        fixes.map(f =>
-            `<div style="margin-bottom: 1rem">
-                <strong>${f.issue}</strong>
-                <p style="margin: 0.2rem 0; color: var(--muted)">${f.fix}</p>
-            </div>`
-        ).join('');
+    fixes.map(f => {
+        const relatedEscaped = String(f.related).replace(/"/g, "&quot;"); // escape double quotes
+        return `
+        <div style="margin-bottom: 0.5rem" class="fix hover-trigger" onclick="highlight(&quot;${relatedEscaped}&quot;)">
+        <strong>${f.issue} ${riskBadge(f.ease)}</strong>
+        <p style="margin: 0.2rem 0; color: var(--muted)">${f.fix}</p>
+        <span class="arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="14" height="14">
+        <path d="M169.4 502.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 402.7 224 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 370.7-105.4-105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/>
+        </svg>
+            </span>
+            </div>
+            `;
+        }).join('');
 
-    document.getElementById('fixmyfingerprint').prepend(section);
+        document.getElementById('fixmyfingerprint').prepend(section);
 }
 
 document.addEventListener('keydown', (e) => {
@@ -562,15 +700,6 @@ document.addEventListener("click", async (e) => {
 });
 
 
-
-
-
-
-
-/* =====================================================
-   GUIDED WALKTHROUGH (NON-DESTRUCTIVE)
-===================================================== */
-
 const walkthroughSteps = [
   {
     title: "What is a browser fingerprint?",
@@ -584,7 +713,7 @@ const walkthroughSteps = [
   },
   {
     title: "Your fingerprint",
-    text: "Your browser fingerprint has been determined. You can view it encoded into a string, or download .json file containing more information. There is also a score that estimates how rare your fingerprint is. Higher scores mean fewer people look like you, so tracking is easier.",
+    text: "Your browser fingerprint has been determined. You can view it encoded into a string, or download .json file containing more information. There is also a score that estimates how rare your fingerprint is. Higher scores mean fewer people look like you, so tracking is easier.</p><hr><p>Tip: click on any element with the copy icon to save it to your clipboard!",
     summary: "show",
     fixes: "hidden",
     high: "hidden",
@@ -624,7 +753,7 @@ const walkthroughSteps = [
   },
   {
     title: "Fixing your fingerprint",
-    text: "These suggestions are based on your fingerprint, and will help you blend in better with common browser setups.",
+    text: "These suggestions are based on your fingerprint, and will help you blend in better with common browser setups.</p><hr><p>Tip: click on any suggested fix to view the related metric!",
     summary: "grey",
     fixes: "show",
     high: "grey",
@@ -651,6 +780,9 @@ function tagCardsByRisk() {
 
 function applyState(el, state) {
   if (!el) return;
+  if (state !== "show") {
+    applyState(el, "show");
+  }
 
   if (state === "show") {
     el.style.visibility = "visible";
@@ -677,7 +809,7 @@ function renderWalkthroughStep() {
   const state = step;
 
   document.getElementById("stepTitle").textContent = step.title || "";
-  document.getElementById("stepDescription").textContent = step.text || "";
+  document.getElementById("stepDescription").innerHTML = step.text || "";
 
   applyState(
     document.getElementById("summary"),
@@ -701,11 +833,24 @@ function renderWalkthroughStep() {
 
   scroll(state.scroll);
 
-  document.getElementById("prevStep").disabled = walkthroughIndex === 0;
-  document.getElementById("nextStep").textContent =
-    walkthroughIndex === walkthroughSteps.length - 1
-      ? "Finish"
-      : "Next";
+const actions = document.querySelector(".walkthrough-buttons");
+const prevBtn = document.getElementById("prevStep");
+const skipBtn = document.getElementById("skipWalkthrough");
+const nextBtn = document.getElementById("nextStep");
+
+prevBtn.style.display = walkthroughIndex === 0 ? "none" : "initial";
+skipBtn.style.display =
+  walkthroughIndex === walkthroughSteps.length - 1 ? "none" : "initial";
+
+prevBtn.disabled = walkthroughIndex === 0;
+nextBtn.textContent =
+  walkthroughIndex === walkthroughSteps.length - 1 ? "Finish" : "Next";
+
+const shouldExpandNext =
+  prevBtn.style.display === "none" ||
+  skipBtn.style.display === "none";
+
+actions.classList.toggle("expand-next", shouldExpandNext);
 }
 
 
@@ -773,20 +918,42 @@ function scroll(risk) {
         card = document.getElementById("fixmyfingerprint");
     } else if (risk == "summary") {
         card = document.getElementById("summary");
-    } else {
+    } else if (['high', 'medium', 'low'].includes(risk)) {
         card = document.querySelector(`.card[data-risk="${risk}"]`);
+    } else {
+        card = document.getElementById(risk);
     }
-    
     if (!card) return;
 
     const y =
         card.getBoundingClientRect().top +
         window.pageYOffset -
         headerHeight -
-        20; // optional extra padding
+        20;
 
     window.scrollTo({
         top: y,
         behavior: "smooth"
+    });
+}
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function highlight(focus) {
+    scroll(focus);
+    document.querySelectorAll('.card').forEach(card => {
+        if (card.id === focus) {
+            applyState(card, 'show');
+        } else {
+            applyState(card, 'grey');
+        }
+    });
+
+    await delay(1000);
+    
+    document.querySelectorAll('.card').forEach(card => {
+        applyState(card, 'show');
     });
 }
