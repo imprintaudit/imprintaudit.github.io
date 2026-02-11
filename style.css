@@ -143,7 +143,7 @@ code:hover::before {
     background-image: url('data:image/svg+xml;utf8,\ <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="%230f172a"><path d="M288 448l-224 0 0-224 48 0 0-64-48 0c-35.3 0-64 28.7-64 64L0 448c0 35.3 28.7 64 64 64l224 0c35.3 0 64-28.7 64-64l0-48-64 0 0 48zm-64-96l224 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64L224 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64z"/></svg>');
 }
 
-code:active::before {
+code.copied::before {
     background-image: url('data:image/svg+xml;utf8,\ <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="%230f172a"><path d="M434.8 70.1c14.3 10.4 17.5 30.4 7.1 44.7l-256 352c-5.5 7.6-14 12.3-23.4 13.1s-18.5-2.7-25.1-9.3l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l101.5 101.5 234-321.7c10.4-14.3 30.4-17.5 44.7-7.1z"/></svg>')
 }
 
@@ -155,7 +155,7 @@ code:active::before {
     background-image: url('data:image/svg+xml;utf8,\ <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="white"><path d="M288 448l-224 0 0-224 48 0 0-64-48 0c-35.3 0-64 28.7-64 64L0 448c0 35.3 28.7 64 64 64l224 0c35.3 0 64-28.7 64-64l0-48-64 0 0 48zm-64-96l224 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64L224 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64z"/></svg>');
 }
 
-.dark code:active::before {
+.dark code.copied::before {
     background-image: url('data:image/svg+xml;utf8,\ <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="white"><path d="M434.8 70.1c14.3 10.4 17.5 30.4 7.1 44.7l-256 352c-5.5 7.6-14 12.3-23.4 13.1s-18.5-2.7-25.1-9.3l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l101.5 101.5 234-321.7c10.4-14.3 30.4-17.5 44.7-7.1z"/></svg>')
 }
 
@@ -268,6 +268,26 @@ footer {
   box-sizing: border-box;
 }
 
+
+
+
+.walkthrough-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.walkthrough-buttons button {
+  flex: 1; /* default: split evenly */
+}
+
+/* when one button is hidden, let the main one grow */
+.walkthrough-buttons.expand-next #nextStep {
+  flex: 2; /* ≈ two thirds */
+}
+
+
+
+
 @media (max-width: 480px) {
   .walkthrough-buttons {
     flex-direction: column;
@@ -281,4 +301,48 @@ footer {
   #skipWalkthrough {
     margin-top: 0.1rem;
   }
+}
+
+.fix {
+    padding: 5px;
+}
+
+.fix:hover {
+    background-color: var(--code);
+}
+
+
+#skipWalkthrough {
+    background: var(--code);
+    color: var(--text);
+}
+
+#skipWalkthrough:hover {
+    background: var(--code-hover)
+}
+
+
+.hover-trigger {
+  position: relative;
+  cursor: pointer;
+  padding-right: 2rem; /* space for arrow */
+}
+
+.arrow {
+  position: absolute;
+  right: 0.5rem;   /* distance from the right edge */
+  top: 55%;     
+  transform: translate(12px, -50%);
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  padding-right: 2rem;
+}
+.arrow svg {
+  width: 2rem;
+  height: auto;
+}
+
+.hover-trigger:hover .arrow {
+  opacity: 1;
+  transform: translate(0, -50%);
 }
